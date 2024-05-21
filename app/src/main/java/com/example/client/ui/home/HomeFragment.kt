@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.client.databinding.FragmentHomeBinding
 import com.example.client.ui.MainActivity
 import com.google.android.material.datepicker.CalendarConstraints
@@ -16,6 +17,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.datepicker.MaterialDatePicker.Builder.dateRangePicker
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -29,17 +31,19 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var chartDetailsRecyclerAdapter: ChartDetailsRecyclerAdapter
+    private lateinit var list: ArrayList<ChartDetailsRecyclerAdapter.DetailInfo>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        list = ArrayList()
+        chartDetailsRecyclerAdapter = ChartDetailsRecyclerAdapter(list)
+        binding = FragmentHomeBinding.inflate(layoutInflater)
+        binding.recViewStats.layoutManager = LinearLayoutManager(activity)
+        binding.recViewStats.adapter = chartDetailsRecyclerAdapter
     }
 
     override fun onCreateView(
@@ -106,8 +110,7 @@ class HomeFragment : Fragment() {
         fun newInstance(param1: String, param2: String) =
             HomeFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -14,25 +15,15 @@ import com.example.client.R
 import com.example.client.databinding.CheckTemplateBinding
 
 class ChecksRecyclerAdapter(private val checks: ArrayList<CheckInfo>) : RecyclerView.Adapter<ChecksRecyclerAdapter.ChecksViewHolder>() { //replace any
-
-    class ChecksViewHolder(private val itemBinding: CheckTemplateBinding) : RecyclerView.ViewHolder(itemBinding.root){
-
-        val num = itemBinding.checkNum
-        val date = itemBinding.checkDate
-        val btn = itemBinding.btnExpand
-        val checkExtra = itemBinding.checkExtra
-
-        fun bind(checkInfo: CheckInfo){
-            num.text = checkInfo.num
-            date.text = checkInfo.date
-        }
-
-
-    }
-
     data class CheckInfo(val _num: String, val _date: String) {
         val num: String = _num
         val date: String = _date
+    }
+    class ChecksViewHolder(private val itemBinding: CheckTemplateBinding) : RecyclerView.ViewHolder(itemBinding.root){
+        val num: TextView = itemBinding.checkNum
+        val date: TextView = itemBinding.checkDate
+        val btn = itemBinding.btnExpand
+        val checkExtra = itemBinding.checkExtra
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChecksViewHolder {
         anim_rot_cw = AnimationUtils.loadAnimation(parent.context, R.anim.rotate_cw)
@@ -50,17 +41,14 @@ class ChecksRecyclerAdapter(private val checks: ArrayList<CheckInfo>) : Recycler
         }
         return ChecksViewHolder(itemBinding)
     }
-
-    override fun getItemCount(): Int {
-        return checks.size
-    }
-
     override fun onBindViewHolder(holder: ChecksViewHolder, position: Int) {
         val checkInfo: CheckInfo = checks[position]
         holder.num.text = checkInfo.num
         holder.date.text = checkInfo.date
     }
-
+    override fun getItemCount(): Int {
+        return checks.size
+    }
     fun updateList(newList: List<CheckInfo>){
         checks.clear()
         checks.addAll(newList)
