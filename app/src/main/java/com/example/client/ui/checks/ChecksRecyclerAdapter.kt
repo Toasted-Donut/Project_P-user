@@ -12,22 +12,19 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.client.R
+import com.example.client.data.models.Check
 import com.example.client.databinding.CheckTemplateBinding
 
-class ChecksRecyclerAdapter(private val checks: ArrayList<CheckInfo>) : RecyclerView.Adapter<ChecksRecyclerAdapter.ChecksViewHolder>() { //replace any
-    data class CheckInfo(val _num: String, val _date: String) {
-        val num: String = _num
-        val date: String = _date
-    }
+class ChecksRecyclerAdapter(private val anim_rot_cw: Animation, private val anim_rot_ccw: Animation) : RecyclerView.Adapter<ChecksRecyclerAdapter.ChecksViewHolder>() { //replace any
+
+    private val allChecks = ArrayList<Check>()
     class ChecksViewHolder(val itemBinding: CheckTemplateBinding) : RecyclerView.ViewHolder(itemBinding.root){}
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChecksViewHolder {
-        anim_rot_cw = AnimationUtils.loadAnimation(parent.context, R.anim.rotate_cw)
-        anim_rot_ccw = AnimationUtils.loadAnimation(parent.context, R.anim.rotate_ccw)
         val itemBinding = CheckTemplateBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         itemBinding.btnExpand.setOnClickListener {
             if (itemBinding.checkExtra.isVisible){
                 itemBinding.checkExtra.visibility = View.GONE
-                itemBinding.btnExpand.startAnimation(ChecksRecyclerAdapter.anim_rot_ccw)
+                itemBinding.btnExpand.startAnimation(anim_rot_ccw)
             }
             else{
                 itemBinding.checkExtra.visibility = View.VISIBLE
@@ -37,22 +34,17 @@ class ChecksRecyclerAdapter(private val checks: ArrayList<CheckInfo>) : Recycler
         return ChecksViewHolder(itemBinding)
     }
     override fun onBindViewHolder(holder: ChecksViewHolder, position: Int) {
-        val checkInfo: CheckInfo = checks[position]
-        holder.itemBinding.checkNum.text = checkInfo.num
-        holder.itemBinding.checkDate.text = checkInfo.date
+        val check: Check = allChecks[position]
+        holder.itemBinding.checkNum.text = check.id.toString()
+        holder.itemBinding.checkDate.text = check.date
+        holder.itemBinding.checkExtra.loadUrl(check.filepath.toString())
     }
     override fun getItemCount(): Int {
-        return checks.size
+        return allChecks.size
     }
-    fun updateList(newList: List<CheckInfo>){
-        checks.clear()
-        checks.addAll(newList)
+    fun updateList(newList: List<Check>){
+        allChecks.clear()
+        allChecks.addAll(newList)
         notifyDataSetChanged()
     }
-    companion object {
-        lateinit var anim_rot_ccw: Animation
-        lateinit var anim_rot_cw: Animation
-    }
-
-
 }

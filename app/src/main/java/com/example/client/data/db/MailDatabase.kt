@@ -20,7 +20,7 @@ abstract class MailDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: MailDatabase? = null
 
-        private const val DB_NAME = "mail_database.db"
+        private const val DB_NAME = "mail_database"
 
         fun getDatabase(context: Context): MailDatabase{
             return INSTANCE ?: synchronized(this){

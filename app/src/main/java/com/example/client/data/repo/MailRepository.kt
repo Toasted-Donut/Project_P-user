@@ -9,7 +9,7 @@ class MailRepository(private val dao: CommonDao) {
 
     fun getAllChecks(): LiveData<List<Check>> = dao.getAllChecks()
 
-    suspend fun getCheckItemsInDateRange(start: Long, end: Long): List<CategorySum> = dao.getCheckItemsInDateRange(start,end)
+    //suspend fun getCheckItemsInDateRange(start: Long, end: Long): List<CategorySum> = dao.getCheckItemsInDateRange(start,end)
 
 
     suspend fun save(vararg category: Category){

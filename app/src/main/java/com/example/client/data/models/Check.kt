@@ -2,7 +2,7 @@ package com.example.client.data.models
 
 import androidx.room.*
 
-@Entity
+@Entity(tableName = "check")
 data class Check(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "check_id")

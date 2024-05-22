@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(
+@Entity(tableName = "product",
     foreignKeys = [ForeignKey(
         entity = Category::class,
         parentColumns = arrayOf("category_id"),
@@ -15,7 +15,8 @@ import androidx.room.PrimaryKey
 )
 data class Product(
     @PrimaryKey(autoGenerate = false)
-    val name: String?,
+    @ColumnInfo(defaultValue = "product")
+    val name: String,
     @ColumnInfo(name = "category_ref_id")
     val categoryId: Int?
 )

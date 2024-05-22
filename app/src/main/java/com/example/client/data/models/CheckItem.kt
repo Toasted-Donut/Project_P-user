@@ -19,7 +19,7 @@ foreignKeys = [
 data class CheckItem(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "check_item_id")
-    val id: Long?,
+    val id: Long,
     val sum: Float?,
     @ColumnInfo(name = "check_ref_id")
     val checkId: Long?,
