@@ -39,7 +39,10 @@ interface CommonDao {
 
 
     @Transaction
-    @Query("SELECT * FROM check_item WHERE check_ref_id BETWEEN :start AND :end")
-    suspend fun getCheckItemsInDateRange(start: Long, end: Long): List<CheckItemFull>
+    @Query("SELECT product.category_ref_id, SUM(check_item.sum)" +
+            "FROM check_item WHERE check_ref_id BETWEEN :start AND :end" +
+            "JOIN product ON check_item.product_ref_name=product.name" +
+            "GROUP BY product.category_ref_id")
+    suspend fun getCheckItemsInDateRange(start: Long, end: Long): List<CategorySum>
 
 }

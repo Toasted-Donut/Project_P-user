@@ -26,10 +26,3 @@ data class CheckItem(
     @ColumnInfo(name = "product_ref_name")
     val productName: String?
 )
-
-data class CheckItemFull(
-    @Embedded
-    val checkItem: CheckItem,
-    @Relation(parentColumn = "product_ref_name", entityColumn = "name", entity = Product::class)
-    val product: Set<Product>
-)
