@@ -19,12 +19,7 @@ class ChecksRecyclerAdapter(private val checks: ArrayList<CheckInfo>) : Recycler
         val num: String = _num
         val date: String = _date
     }
-    class ChecksViewHolder(private val itemBinding: CheckTemplateBinding) : RecyclerView.ViewHolder(itemBinding.root){
-        val num: TextView = itemBinding.checkNum
-        val date: TextView = itemBinding.checkDate
-        val btn = itemBinding.btnExpand
-        val checkExtra = itemBinding.checkExtra
-    }
+    class ChecksViewHolder(val itemBinding: CheckTemplateBinding) : RecyclerView.ViewHolder(itemBinding.root){}
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChecksViewHolder {
         anim_rot_cw = AnimationUtils.loadAnimation(parent.context, R.anim.rotate_cw)
         anim_rot_ccw = AnimationUtils.loadAnimation(parent.context, R.anim.rotate_ccw)
@@ -43,8 +38,8 @@ class ChecksRecyclerAdapter(private val checks: ArrayList<CheckInfo>) : Recycler
     }
     override fun onBindViewHolder(holder: ChecksViewHolder, position: Int) {
         val checkInfo: CheckInfo = checks[position]
-        holder.num.text = checkInfo.num
-        holder.date.text = checkInfo.date
+        holder.itemBinding.checkNum.text = checkInfo.num
+        holder.itemBinding.checkDate.text = checkInfo.date
     }
     override fun getItemCount(): Int {
         return checks.size

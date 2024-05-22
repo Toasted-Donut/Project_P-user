@@ -1,8 +1,6 @@
 package com.example.client.data.models
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity
 data class Check(
@@ -16,3 +14,9 @@ data class Check(
     @ColumnInfo(name = "check_filepath")
     val filepath: String?
 )
+//data class CheckFull(
+//    @Embedded
+//    val check: Check,
+//    @Relation(parentColumn = "check_id", entityColumn = "check_ref_id", entity = CheckItem::class)
+//    val items: List<CheckItem>
+//)
