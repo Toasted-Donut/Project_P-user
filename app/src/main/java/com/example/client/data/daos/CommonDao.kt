@@ -37,15 +37,18 @@ interface CommonDao {
     @Query("SELECT * FROM 'check'")
     fun getAllChecks(): LiveData<List<Check>>
 
+    @Query("SELECT * FROM 'product' WHERE name = :name")
+    suspend fun getProductByName(name: String): List<Product>
 
-//    @Transaction
-//    @Query("""
-//        SELECT product.category_ref_id AS category_ref_id, SUM(check_item.sum) AS sum
-//        FROM check_item
-//        JOIN product ON check_item.product_ref_name = product.name
-//        WHERE check_item.check_ref_id BETWEEN :start AND :end
-//        GROUP BY product.category_ref_id
-//    """)
-//    suspend fun getCheckItemsInDateRange(start: Long, end: Long): List<CategorySum>
+
+    @Transaction
+    @Query("""
+        SELECT product.category_ref_id AS category_ref_id, SUM(check_item.sum) AS sum
+        FROM check_item
+        JOIN product ON check_item.product_ref_name = product.name
+        WHERE check_item.check_ref_id BETWEEN :start AND :end
+        GROUP BY product.category_ref_id
+    """)
+    suspend fun getCheckItemsInDateRange(start: Long, end: Long): List<CategorySum>
 
 }

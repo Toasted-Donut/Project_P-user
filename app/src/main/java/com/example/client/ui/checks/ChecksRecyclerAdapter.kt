@@ -15,6 +15,7 @@ import com.example.client.R
 import com.example.client.data.models.Check
 import com.example.client.databinding.CheckTemplateBinding
 
+
 class ChecksRecyclerAdapter(private val anim_rot_cw: Animation, private val anim_rot_ccw: Animation) : RecyclerView.Adapter<ChecksRecyclerAdapter.ChecksViewHolder>() { //replace any
 
     private val allChecks = ArrayList<Check>()
@@ -31,13 +32,19 @@ class ChecksRecyclerAdapter(private val anim_rot_cw: Animation, private val anim
                 itemBinding.btnExpand.startAnimation(anim_rot_cw)
             }
         }
+        itemBinding.checkExtra.settings.allowFileAccess = true
+        itemBinding.checkExtra.settings.loadWithOverviewMode = true
+        itemBinding.checkExtra.settings.useWideViewPort = true
+        itemBinding.checkExtra.settings.builtInZoomControls = true
+        itemBinding.checkExtra.settings.displayZoomControls = false
+        itemBinding.checkExtra.setInitialScale(100)
         return ChecksViewHolder(itemBinding)
     }
     override fun onBindViewHolder(holder: ChecksViewHolder, position: Int) {
         val check: Check = allChecks[position]
         holder.itemBinding.checkNum.text = check.id.toString()
         holder.itemBinding.checkDate.text = check.date
-        holder.itemBinding.checkExtra.loadUrl(check.filepath.toString())
+        holder.itemBinding.checkExtra.loadUrl(check.filepath!!)
     }
     override fun getItemCount(): Int {
         return allChecks.size

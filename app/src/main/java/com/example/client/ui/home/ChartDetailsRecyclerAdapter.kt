@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.client.databinding.StatItemBinding
-import com.example.client.ui.getCHartColor
+import com.example.client.data.getCHartColor
 
 
 class ChartDetailsRecyclerAdapter(private val details: ArrayList<DetailInfo>) : RecyclerView.Adapter<ChartDetailsRecyclerAdapter.DetailsViewHolder>() {

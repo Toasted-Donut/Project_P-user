@@ -1,4 +1,4 @@
-package com.example.client.ui
+package com.example.client.data
 
 import android.graphics.Color
 import com.example.client.R

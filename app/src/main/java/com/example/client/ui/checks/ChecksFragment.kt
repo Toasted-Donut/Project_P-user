@@ -1,30 +1,17 @@
 package com.example.client.ui.checks
 
-import android.animation.Animator
-import android.animation.LayoutTransition
-
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.widget.Toast
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.ItemAnimator
-import com.example.client.R
-import com.example.client.data.models.Check
+import com.example.client.data.Mail
 import com.example.client.databinding.FragmentChecksBinding
 import com.example.client.ui.MainActivity
 import kotlinx.coroutines.*
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.coroutines.CoroutineContext
-
-import kotlin.time.Duration.Companion.days
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,20 +47,17 @@ class ChecksFragment : Fragment(), CoroutineScope {
         binding.recViewChecks.adapter = mainActivity.checksRecyclerAdapter
         binding.pullToRefresh.setOnRefreshListener {
             launch {
-                addBlankTest(mainActivity)
+                withContext(Dispatchers.IO) {
+                    val props = Properties()
+                    props.load((mainActivity).assets.open("mail.properties"))
+                    Mail(props, mainActivity).getMessages()
+                }
             }
             binding.pullToRefresh.isRefreshing = false
         }
         return binding.root
     }
-    suspend fun addBlankTest(mainActivity: MainActivity){
-        val cal = Calendar.getInstance()
-        mainActivity.checksViewModel.insertCheck(Check(
-            id=cal.timeInMillis,
-            date = String.format(
-                "${cal.get(Calendar.DAY_OF_MONTH)}/${cal.get(Calendar.MONTH)}/${cal.get(Calendar.YEAR)}"),
-            filepath = ""))
-    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of
