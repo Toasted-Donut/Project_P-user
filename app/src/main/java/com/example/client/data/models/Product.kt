@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
+
 
 @Entity(tableName = "product"
 //    foreignKeys = [ForeignKey(
@@ -16,7 +18,9 @@ import androidx.room.PrimaryKey
 data class Product(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(defaultValue = "product")
+    @SerializedName("name")
     val name: String,
-    @ColumnInfo(name = "category_ref_id", index = true)
-    val categoryId: Int?
+    @ColumnInfo(name = "categoryId")
+    @SerializedName("categoryId")
+    val categoryId: Int
 )

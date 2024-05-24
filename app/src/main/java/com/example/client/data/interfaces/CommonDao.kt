@@ -1,4 +1,4 @@
-package com.example.client.data.daos
+package com.example.client.data.interfaces
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -6,7 +6,7 @@ import com.example.client.data.models.*
 
 @Dao
 interface CommonDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(vararg category: Category)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -43,12 +43,12 @@ interface CommonDao {
 
     @Transaction
     @Query("""
-        SELECT product.category_ref_id AS category_id, category.category_name as category_name, SUM(check_item.sum) AS sum
+        SELECT product.categoryId AS category_id, category.category_name as category_name, SUM(check_item.sum) AS sum
         FROM check_item
         JOIN product ON check_item.product_ref_name = product.name
-        JOIN category ON category.category_id = product.category_ref_id
+        JOIN category ON category.category_id = product.categoryId
         WHERE check_item.check_ref_id BETWEEN :start AND :end
-        GROUP BY product.category_ref_id
+        GROUP BY product.categoryId
     """)
     suspend fun getCheckItemsInDateRange(start: Long, end: Long): List<CategorySum>
 

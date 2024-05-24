@@ -1,6 +1,7 @@
 package com.example.client.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +14,6 @@ import com.example.client.data.Mail
 import com.example.client.data.models.Category
 import com.example.client.databinding.ActivityMainBinding
 import com.example.client.ui.checks.ChecksRecyclerAdapter
-import com.example.client.ui.checks.CommonViewModel
 import com.example.client.ui.home.ChartDetailsRecyclerAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
@@ -59,18 +59,20 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 checksRecyclerAdapter.updateList(it)
             }
         })
-
-
-
-
-
         launch {
-            commonViewModel.repository.save(Category(1,"Другое"))
+            Log.wtf("gg","start fetching")
+            launch{
+                commonViewModel.repository.fetchCategories()
+                commonViewModel.repository.fetchProducts()
+            }.join()
+            Log.wtf("gg","end fetching")
             val props = Properties()
             withContext(Dispatchers.IO) {
                 props.load((this@MainActivity).assets.open("mail.properties"))
             }
+            Log.wtf("gg","start mail")
             Mail(props,this@MainActivity).getMessages()
+            Log.wtf("gg","end mail")
         }
     }
 

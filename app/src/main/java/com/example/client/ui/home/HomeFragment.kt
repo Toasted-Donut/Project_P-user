@@ -1,26 +1,18 @@
 package com.example.client.ui.home
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
-import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.client.data.getCHartColor
 import com.example.client.databinding.FragmentHomeBinding
 import com.example.client.ui.CommonViewModeLProviderFactory
-import com.example.client.ui.MainActivity
 import com.example.client.ui.MyApp
-import com.example.client.ui.checks.CommonViewModel
+import com.example.client.ui.CommonViewModel
 import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointBackward
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.datepicker.MaterialDatePicker.Builder.dateRangePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +20,6 @@ import kotlinx.coroutines.Job
 import org.eazegraph.lib.models.PieModel
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.coroutines.CoroutineContext
 
 

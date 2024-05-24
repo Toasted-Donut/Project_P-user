@@ -37,8 +37,10 @@ class Mail(private val mailProps: Properties, private val mainActivity: MainActi
             val inbox = store.getFolder("INBOX"); inbox.open(Folder.READ_ONLY)
             val checks = ArrayList<Check>()
             val checkItems = ArrayList<CheckItem>()
+            Log.i("gg",inbox.messageCount.toString())
             for (message in inbox.messages){
                 if (message.subject.contains(other = "чек",ignoreCase = true)){
+                    Log.i("gg",message.subject)
                     val messageInfo = getTextFromMessage(message)
                     if (messageInfo!=null){
                         val checkPath = String.format("${message.messageNumber} ${message.subject}.html")
@@ -77,7 +79,9 @@ class Mail(private val mailProps: Properties, private val mainActivity: MainActi
                     }
                 }
             }
+            Log.wtf("gg","start saving")
             mainActivity.commonViewModel.insertCheck(checks,checkItems)
+            Log.wtf("gg","end saving")
             inbox.close(true)
         }catch (ex: Exception){
             Log.e("mail_error",ex.message.toString())

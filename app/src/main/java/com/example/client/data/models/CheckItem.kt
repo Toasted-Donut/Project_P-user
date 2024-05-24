@@ -21,6 +21,6 @@ data class CheckItem(
     val sum: Float?,
     @ColumnInfo(name = "check_ref_id", index = true)
     val checkId: Long,
-    @ColumnInfo(name = "product_ref_name", index = true)
+    @ColumnInfo(name = "product_ref_name")
     val productName: String
 )

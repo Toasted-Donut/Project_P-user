@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.client.data.daos.CommonDao
+import com.example.client.data.interfaces.CommonDao
 import com.example.client.data.models.Category
 import com.example.client.data.models.Check
 import com.example.client.data.models.CheckItem
