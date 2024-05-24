@@ -1,5 +1,6 @@
 package com.example.client.ui.checks
 
+import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,10 +31,10 @@ class ChecksFragment : Fragment(), CoroutineScope {
         get() = Dispatchers.Main + job
 
     private lateinit var binding: FragmentChecksBinding
+    private lateinit var mainActivity: MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
        // Toast.makeText(activity,"gg", Toast.LENGTH_SHORT).show()
     }
 
@@ -41,8 +42,14 @@ class ChecksFragment : Fragment(), CoroutineScope {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val mainActivity = activity as MainActivity
-        binding = FragmentChecksBinding.inflate(layoutInflater)
+        mainActivity = activity as MainActivity
+        binding = FragmentChecksBinding.inflate(inflater)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.recViewChecks.layoutManager = LinearLayoutManager(activity)
         binding.recViewChecks.adapter = mainActivity.checksRecyclerAdapter
         binding.pullToRefresh.setOnRefreshListener {
@@ -55,9 +62,7 @@ class ChecksFragment : Fragment(), CoroutineScope {
             }
             binding.pullToRefresh.isRefreshing = false
         }
-        return binding.root
     }
-
     companion object {
         /**
          * Use this factory method to create a new instance of

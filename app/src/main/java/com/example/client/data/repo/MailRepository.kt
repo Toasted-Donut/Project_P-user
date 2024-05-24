@@ -20,8 +20,8 @@ class MailRepository(private val dao: CommonDao) {
     }
     suspend fun save(vararg checkItems: CheckItem){
         for (checkItem in checkItems){
-            if (dao.getProductByName(checkItem.productName!!).isEmpty()){
-                save(Product(categoryId = 0, name = checkItem.productName))
+            if (dao.getProductByName(checkItem.productName).isEmpty()){
+                save(Product(categoryId = 1, name = checkItem.productName))
             }
         }
         dao.save(*checkItems)

@@ -7,17 +7,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.client.databinding.StatItemBinding
 import com.example.client.data.getCHartColor
+import com.example.client.data.models.CategorySum
 
 
-class ChartDetailsRecyclerAdapter(private val details: ArrayList<DetailInfo>) : RecyclerView.Adapter<ChartDetailsRecyclerAdapter.DetailsViewHolder>() {
-    data class DetailInfo(val _catNum: Int, val _sum: Float){
-        val catNum = _catNum
-        val sum = _sum
-    }
-    class DetailsViewHolder(private val itemBinding: StatItemBinding) : RecyclerView.ViewHolder(itemBinding.root){
-        val categoryName: TextView = itemBinding.category
-        val sum: TextView = itemBinding.sum
-        val color: View = itemBinding.color
+class ChartDetailsRecyclerAdapter : RecyclerView.Adapter<ChartDetailsRecyclerAdapter.DetailsViewHolder>() {
+    private val details = ArrayList<CategorySum>()
+    class DetailsViewHolder(val itemBinding: StatItemBinding) : RecyclerView.ViewHolder(itemBinding.root){
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailsViewHolder {
@@ -26,13 +21,20 @@ class ChartDetailsRecyclerAdapter(private val details: ArrayList<DetailInfo>) : 
     }
 
     override fun onBindViewHolder(holder: DetailsViewHolder, position: Int) {
-        val detailInfo: DetailInfo = details[position]
-        holder.categoryName.text = detailInfo.catNum.toString()
-        holder.sum.text = detailInfo.sum.toString()
-        holder.color.setBackgroundColor(getCHartColor(detailInfo.catNum))
+        val detailInfo = details[position]
+        holder.itemBinding.category.text = detailInfo.name
+        holder.itemBinding.sum.text = detailInfo.sum.toString()
+        holder.itemBinding.color.setBackgroundColor(getCHartColor(detailInfo.categoryID))
     }
 
     override fun getItemCount(): Int {
         return details.size
     }
+
+    fun updateList(newList: List<CategorySum>){
+        details.clear()
+        details.addAll(newList)
+        notifyDataSetChanged()
+    }
+
 }

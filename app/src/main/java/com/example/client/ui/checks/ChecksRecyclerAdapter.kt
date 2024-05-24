@@ -16,22 +16,39 @@ import com.example.client.data.models.Check
 import com.example.client.databinding.CheckTemplateBinding
 
 
-class ChecksRecyclerAdapter(private val anim_rot_cw: Animation, private val anim_rot_ccw: Animation) : RecyclerView.Adapter<ChecksRecyclerAdapter.ChecksViewHolder>() { //replace any
+class ChecksRecyclerAdapter(private val anim_rot_cw: Animation, private val anim_rot_ccw: Animation) : RecyclerView.Adapter<ChecksRecyclerAdapter.ChecksViewHolder>() {
 
+    private var expandedHolderPosition = -1
     private val allChecks = ArrayList<Check>()
-    class ChecksViewHolder(val itemBinding: CheckTemplateBinding) : RecyclerView.ViewHolder(itemBinding.root){}
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChecksViewHolder {
-        val itemBinding = CheckTemplateBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        itemBinding.btnExpand.setOnClickListener {
-            if (itemBinding.checkExtra.isVisible){
-                itemBinding.checkExtra.visibility = View.GONE
-                itemBinding.btnExpand.startAnimation(anim_rot_ccw)
+    private var getViewHolder: (position: Int) -> ChecksViewHolder? = { null }
+    inner class ChecksViewHolder(private val itemBinding: CheckTemplateBinding) : RecyclerView.ViewHolder(itemBinding.root){
+        private val isExpanded get() = adapterPosition == expandedHolderPosition
+        fun bindItem(check: Check) {
+            itemBinding.checkNum.text = check.id.toString()
+            itemBinding.checkDate.text = check.date
+            itemBinding.checkExtra.loadUrl(check.filepath!!)
+            if (isExpanded){
+                itemBinding.checkExtra.visibility = View.VISIBLE
             }
             else{
-                itemBinding.checkExtra.visibility = View.VISIBLE
-                itemBinding.btnExpand.startAnimation(anim_rot_cw)
+                itemBinding.checkExtra.visibility = View.GONE
+            }
+            itemBinding.btnExpand.setOnClickListener {
+                val  position = adapterPosition
+                notifyItemChanged(position)
+                if (isExpanded){
+                    itemBinding.btnExpand.startAnimation(anim_rot_ccw)
+                    expandedHolderPosition = -1
+                }
+                else{
+                    itemBinding.btnExpand.startAnimation(anim_rot_cw)
+                    expandedHolderPosition = position
+                }
             }
         }
+    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChecksViewHolder {
+        val itemBinding = CheckTemplateBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         itemBinding.checkExtra.settings.allowFileAccess = true
         itemBinding.checkExtra.settings.loadWithOverviewMode = true
         itemBinding.checkExtra.settings.useWideViewPort = true
@@ -42,16 +59,20 @@ class ChecksRecyclerAdapter(private val anim_rot_cw: Animation, private val anim
     }
     override fun onBindViewHolder(holder: ChecksViewHolder, position: Int) {
         val check: Check = allChecks[position]
-        holder.itemBinding.checkNum.text = check.id.toString()
-        holder.itemBinding.checkDate.text = check.date
-        holder.itemBinding.checkExtra.loadUrl(check.filepath!!)
+        holder.bindItem(check)
+    }
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        getViewHolder = { position ->
+            recyclerView.findViewHolderForAdapterPosition(position) as? ChecksViewHolder
+        }
     }
     override fun getItemCount(): Int {
         return allChecks.size
     }
     fun updateList(newList: List<Check>){
-        allChecks.clear()
-        allChecks.addAll(newList)
-        notifyDataSetChanged()
+        this.expandedHolderPosition = -1
+        this.allChecks.clear()
+        this.allChecks.addAll(newList)
+        this.notifyDataSetChanged()
     }
 }
